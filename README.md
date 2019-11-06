@@ -1,15 +1,17 @@
 # Business Object Bundler or BOB
 
-> What is a Business Object? 
-> A business object is a collection of business rules or use cases for your application. 
-> It is what makes your application unique or special and they should be pure.
+### What is a Business Object? 
 
-> What is the Business Object Bundler?
-> The business object bundler is an abstract container that can compose
-> 1 or more business object bundles and provide access to the use case
-> functions of the business objects. It can also allow the user to inject
-> one or more detail objects into the each business object use case
-> function.
+A business object is a collection of business rules or use cases for your application. 
+It is what makes your application unique or special and they should be pure.
+
+### What is the Business Object Bundler?
+
+The business object bundler is an abstract container that can compose
+1 or more business object bundles and provide access to the use case
+functions of the business objects. It can also allow the user to inject
+one or more detail objects into the each business object use case
+function.
 
 The Business Object bundler takes pure business objects and composes them
 into a super object one might call a component or an application, the super 
