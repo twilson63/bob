@@ -1,0 +1,15 @@
+{
+  "name": "bob",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "ramda": "^0.26.1"
+  },
+  "devDependencies": {
+    "tape": "^4.11.0"
+  },
+  "scripts": {
+    "test": "tape test/index_test.js"
+  }
+}
