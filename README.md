@@ -72,33 +72,56 @@ This approach allows for the person create use case to leverage the gateway inte
 but the business object can validate the person object and apply any rules or calculations before persisting
 to a data store. Once persisted it can check for success and return a successful result or return an error.
 
-> What is the point? Why don't I just call the gateway straight from the api? Or why don't I just access the
+### What is the point? Why don't I just call the gateway straight from the api? Or why don't I just access the
 database from the api?
 
-> These are good questions, and the main reason is flexibility, by abstracting your business rules and creating 
+These are good questions, and the main reason is flexibility, by abstracting your business rules and creating 
 a boundry between your details like api framework or database, these details can be changed without changing your
 business rules.
 
-> Another way to think about it, is that stakeholders change their minds all the time, they may want the workflow
+Another way to think about it, is that stakeholders change their minds all the time, they may want the workflow
 to go right, then they may want it to go left, etc. By placing all of those decisions in your `BusinessObjects` 
 and decoupling them from your database or api framework, then you can change a lot of the business objects 
 control flow and strategies without having to change your framework or database. This means you can wrap a whole 
 test framework around your business objects and you will be able to test a significant amount of your features 
 using integration or unit testing libraries without having to load your whole database or api framework.
 
-> This can add a lot of confidence to your team, yes it is more effort up front, but the payoff in the end is 
+This can add a lot of confidence to your team, yes it is more effort up front, but the payoff in the end is 
 more maintainable code.
 
-> Why use a tool like business object bundler? Why not just create my business objects and manage them without
+### Why use a tool like business object bundler? Why not just create my business objects and manage them without
 a container?
 
-> The purpose of the bundler is to give you a way to compose these objects together so that you can create 
+The purpose of the bundler is to give you a way to compose these objects together so that you can create 
 and refactor the business object boundaries without having explicit dependencies between the objects or 
 the implementation details. There are certainly other ways to accommplish this, but this process can 
 save you a lot of time and effort.
 
+## API
 
+### Business Objects
 
+Business Objects are plain javascript objects that have two rules:
+
+* Must always have a name property that returns a string, this needs to be unique in the bundle
+* Every function is a higher order function that returns a function that will contain the initialized
+implementation details.
+
+Business Object implement application use cases these use cases can be represented as functions attached
+to the business object. Often these functions will need to perform calculations, communicate with other
+objects and implementation details. Using these use case functions you can get access to other business
+objects or details by creating a manual curry or higher order function, or you can leverage curry to 
+do the same.
+
+#### Business Object Example
+
+``` js
+
+module.exports = {
+  name: 'person',
+  create: (person) => ({ details }) => details.gateway.save(person)
+}
+```
 
 
 
