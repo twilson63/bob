@@ -1,28 +1,27 @@
 # Business Object Bundler or BOB
 
+Welcome to the BOB project! This project is about software design/architecture. 
+What is software architecture and why is it important?
+
+> The goal of software architecture is to minimize the human resources required to build an dmaintain the required system.
+
+The measure of design quality is simply the measure of the effort required to meet the needs of the customer. If that effort is low, and stays low throughout the lifetime of the system, the design is good.
+
+BOB is a container used to help create clean software architecture. By enabling the inversion of dependency with implementation details using the facade pattern. 
+
+> This means, that the bob module can compose one or more objects together for a single grouping of pure business rules that can access implementation details like database gateways without having to explicity depend on these gateways.
+
+These objects are called business objects, they are a group of functions that perform the use cases of an application, or you can think of them as the business rules or policies of your application. By making these objects and functions pure, which means they do not depend on any implementation details, then you can wrap a whole test system around them without having to include the database or web or framework.
+
 ### What is a Business Object? 
 
-A business object is a collection of business rules or use cases for your application. 
-It is what makes your application unique or special and they should be pure.
+A business object is a collection of business rules for your application. 
+Business rules are what makes your application unique and special, these rules 
+are usually defined in terms of entities and iterators, or simply use cases. When
+architecting or designing your application the first mission is to define the use 
+cases. These use cases frame the requirements of your application.
 
-### What is the Business Object Bundler?
-
-The business object bundler is an abstract container that can compose
-1 or more business object bundles and provide access to the use case
-functions of the business objects. It can also allow the user to inject
-one or more detail objects into the each business object use case
-function.
-
-The Business Object bundler takes pure business objects and composes them
-into a super object one might call a component or an application, the super 
-object takes the name property of each Business Object and uses it as a key
-in the business object component. Then for each function on every business
-object it wraps the function to inject the business object component 
-and details object. This allows the business objects to communicate with each 
-other without having to contain explicit dependencies as well as allows the
-details to be accessible without having direct dependencies. 
-
-## Implementation Details
+## What are Implementation Details
 
 Implementation Details are mostly side effect interfaces to your application, you can think of the following as implementation details.
 
@@ -34,16 +33,16 @@ You want to add these details to your Business Object Bundler so that each Busin
 
 It is important that all arrows of your details are pointing to the Business Objects as dependencies and that your Business Objects do not depend on your implementation details.
 
-API Framework --> Business Objects <-- DAL Gateway --> DAL
+`API Framework --> Business Objects <-- DAL Gateway --> DAL`
 
 It is also important that you can run integration tests and unit tests without any implementation detail.
 
-Testing Framework --> Business Objects <-- DAL Gateway --> MockDAL
+`Testing Framework --> Business Objects <-- DAL Gateway --> MockDAL`
 
 ## Example
 
 ``` js
-const createApp = require('@twilson63/bob')
+const createBob = require('@twilson63/bob')
 
 const Person = require('./person')
 const User = require('./user')
@@ -51,14 +50,14 @@ const Permission = require('./permission')
 
 const DALGateway = require('./dal-gateway')
 
-const app = createApp(
+const bob = createApp(
   // business objects - policies
   [Person, User, Permission], 
   // details
   { gateway: DALGateway}
 )
 
-app.person.create({ name: 'Tom Wilson'})
+bob.person.create({ name: 'Tom Wilson'})
   .then(res => console.log(res))
   .catch(err => console.log(err))
 
@@ -72,10 +71,10 @@ This approach allows for the person create use case to leverage the gateway inte
 but the business object can validate the person object and apply any rules or calculations before persisting
 to a data store. Once persisted it can check for success and return a successful result or return an error.
 
-### What is the point? Why don't I just call the gateway straight from the api? Or why don't I just access the
-database from the api?
 
-These are good questions, and the main reason is flexibility, by abstracting your business rules and creating 
+### Why do I need this abstraction?
+
+Good questions, and the main reason is flexibility, by abstracting your business rules and creating 
 a boundry between your details like api framework or database, these details can be changed without changing your
 business rules.
 
@@ -116,12 +115,55 @@ do the same.
 #### Business Object Example
 
 ``` js
+const { has } = require('ramda')
+
+function validatePerson (person) {
+  return has('name', person)
+}
 
 module.exports = {
   name: 'person',
-  create: (person) => ({ details }) => details.gateway.save(person)
+  create: (person) => ({ details }) => {
+    if (validatePerson(person)) {
+      return details.gateway.save(person)
+    }
+    return Promise.reject({ok: false, message: 'Invalid'})
+  }
 }
 ```
 
 
+Now that you have a Business Object with a use case, called person.create, we want to add it to our application, lets say we have an express api framework.
 
+```
+const express = require('express')
+const app = express()
+
+const createBundle = require('@twilson63/bob')
+const person = require('./person')
+const gateway = require('./data/gateway')
+
+const bundle = createBundle([person], [gateway])
+
+app.post('/people', async (req, res) => {
+  const result = await bundle.person.create(req.body)
+  
+})
+
+app.listen(3000)
+
+```
+
+By bundling up the person business object we can inject the data gateway and keep all of the business objects in a boundry where the business objects do not depend on the details directly. This can loosely couple our business rules to the framework and database. Which means that the business objects are easy to test without requiring a database or web framework.
+
+`Framework` -->  `Business Objects` <-- `Database Gateway`
+
+The more decisions of our application we can place in these business objects, the better we can become at creating reliable testable applications. And manage change over time.
+
+
+
+### Packaging Options
+
+You can certainly package bob and business objects anywhere, but give some good thought on how you want to partition your business objects for your application. Also the displine required to implement through the dependency process. By separating layers using package components maybe worth the effort to risk developer taking short cuts.
+
+### Everything should be testable without the database and the web. 
