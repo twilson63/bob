@@ -3,7 +3,7 @@ const { reduce, assoc, keys, all, equals, has,
 } = require('ramda')
 
 /**
- * create app bundler
+ * create business object bundler
  *
  * take one to many objects with a name prop
  * and HOF functions
@@ -19,10 +19,10 @@ const hasName = compose(
 )
 
 /**
- * createApp
+ * createBob
  *
- * take 1 or more BO bundles and return a super object 
- * with each BO mapped by name properties
+ * take 1 or more Business Objects and return a component or bundle 
+ * with each Business Object mapped by name properties
  *
  * @param {array} bizObjs - BusinessObjects with name property
  * @param {object} details - implementation details
@@ -58,14 +58,14 @@ module.exports = function (bizObjs, details={}) {
  * rewrap each function in the bundle 
  * to add the app object to each HOF
  *
- * @param {object} bundle - pure Business Object
+ * @param {object} bo - pure Business Object
  * @return {object} - new BusinessObjects with wrappers
  */
-function rewrap(bundle) {
+function rewrap(bo) {
   return (acc, key) => {
-    if (key === 'name') { return assoc('name', bundle.name, acc) }
-    if (typeof bundle[key] === 'function') {
-      const fn = bundle[key]
+    if (key === 'name') { return assoc('name', bo.name, acc) }
+    if (is(Function,  bo[key])) {
+      const fn = bo[key]
       acc[key] = function (...args) {
         const injectFn = fn(...args)
         if (is(Function, injectFn)) {
