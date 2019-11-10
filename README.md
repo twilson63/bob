@@ -3,7 +3,7 @@
 Welcome to the BOB project! This project is about software design/architecture. 
 What is software architecture and why is it important?
 
-> The goal of software architecture is to minimize the human resources required to build an dmaintain the required system.
+> The goal of software architecture is to minimize the human resources required to build and maintain the required system.
 
 The measure of design quality is simply the measure of the effort required to meet the needs of the customer. If that effort is low, and stays low throughout the lifetime of the system, the design is good.
 
@@ -21,7 +21,7 @@ are usually defined in terms of entities and iterators, or simply use cases. Whe
 architecting or designing your application the first mission is to define the use 
 cases. These use cases frame the requirements of your application.
 
-## What are Implementation Details
+## What are Implementation Details?
 
 Implementation Details are mostly side effect interfaces to your application, you can think of the following as implementation details.
 
@@ -29,15 +29,14 @@ Implementation Details are mostly side effect interfaces to your application, yo
 * GUI Framework or API Framework
 * Services
 
-You want to add these details to your Business Object Bundler so that each Business Object can interact with I/O devices via interfaces.
 
 It is important that all arrows of your details are pointing to the Business Objects as dependencies and that your Business Objects do not depend on your implementation details.
 
-`API Framework --> Business Objects <-- DAL Gateway --> DAL`
+`API Framework --> Business Objects <-- Gateway --> DAL`
 
 It is also important that you can run integration tests and unit tests without any implementation detail.
 
-`Testing Framework --> Business Objects <-- DAL Gateway --> MockDAL`
+`Testing Framework --> Business Objects <-- Gateway --> MockDAL`
 
 ## Example
 
@@ -48,13 +47,13 @@ const Person = require('./person')
 const User = require('./user')
 const Permission = require('./permission')
 
-const DALGateway = require('./dal-gateway')
+const gateway = require('./gateway')
 
 const bob = createApp(
   // business objects - policies
   [Person, User, Permission], 
   // details
-  { gateway: DALGateway}
+  { gateway: gateway}
 )
 
 bob.person.create({ name: 'Tom Wilson'})
@@ -64,7 +63,7 @@ bob.person.create({ name: 'Tom Wilson'})
 ```
 
 In this example we are bundling the Person, User and Permission business objects into a single 
-container or bundle, we are also including our database gateway or access layer as an implementation
+bundle or business component, we are also including our database gateway or access layer as an implementation
 detail.
 
 This approach allows for the person create use case to leverage the gateway interface to persist the object, 
@@ -75,8 +74,7 @@ to a data store. Once persisted it can check for success and return a successful
 ### Why do I need this abstraction?
 
 Good questions, and the main reason is flexibility, by abstracting your business rules and creating 
-a boundry between your details like api framework or database, these details can be changed without changing your
-business rules.
+a boundry between your details like api framework or database, these details can be changed without changing your business rules.
 
 Another way to think about it, is that stakeholders change their minds all the time, they may want the workflow
 to go right, then they may want it to go left, etc. By placing all of those decisions in your `BusinessObjects` 
@@ -97,6 +95,22 @@ the implementation details. There are certainly other ways to accommplish this, 
 save you a lot of time and effort.
 
 ## API
+
+The api for BOB is a single function, it takes two arguments, an array of business objects and a
+object of details and returns a bundle object.
+
+```
+([...businessObjects], {details}) -> {bundle}
+```
+
+This bundle object can be used to invoke the use cases defined by the business objects.
+
+Each business object must have a name property that returns a unique string. This string will be
+used to access the business object use cases on the bundle.
+
+Then each method on the business object, must be a higher order method that returns a function, which represents the use case function. 
+
+By defining the object with a name property and setting each function as a higher order function to receive implementation details via the returning function invocation, you can create a clean separation between your business rules and implementation details.
 
 ### Business Objects
 
