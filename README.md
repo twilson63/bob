@@ -73,21 +73,20 @@ to a data store. Once persisted it can check for success and return a successful
 
 ### Why do I need this abstraction?
 
-Good questions, and the main reason is flexibility, by abstracting your business rules and creating 
-a boundry between your details like api framework or database, these details can be changed without changing your business rules.
+Good question, the main reason is flexibility, by abstracting your business rules and creating a boundry between your details like api framework or database, these details can be changed without changing your business rules.
+
+> Think about it for a minute, what if every requirement or every user change or new use case could be managed in one defined location, so when the stakeholder changes their mind it does not effect or touch several components in the system. 
 
 Another way to think about it, is that stakeholders change their minds all the time, they may want the workflow
 to go right, then they may want it to go left, etc. By placing all of those decisions in your `BusinessObjects` 
 and decoupling them from your database or api framework, then you can change a lot of the business objects 
-control flow and strategies without having to change your framework or database. This means you can wrap a whole 
-test framework around your business objects and you will be able to test a significant amount of your features 
+control flow and strategies without having to change your framework or database. This means you can wrap a whole test framework around your business objects and you will be able to test a significant amount of your features 
 using integration or unit testing libraries without having to load your whole database or api framework.
 
 This can add a lot of confidence to your team, yes it is more effort up front, but the payoff in the end is 
-more maintainable code.
+maintainable code.
 
-### Why use a tool like business object bundler? Why not just create my business objects and manage them without
-a container?
+### Why use a tool like business object bundler? Why not just create my business objects and manage them withouta bundle?
 
 The purpose of the bundler is to give you a way to compose these objects together so that you can create 
 and refactor the business object boundaries without having explicit dependencies between the objects or 
@@ -180,4 +179,39 @@ The more decisions of our application we can place in these business objects, th
 
 You can certainly package bob and business objects anywhere, but give some good thought on how you want to partition your business objects for your application. Also the displine required to implement through the dependency process. By separating layers using package components maybe worth the effort to risk developer taking short cuts.
 
-### Everything should be testable without the database and the web. 
+One possible solution is to leverage `npm link` to symlink your business object bundle to your application, this way the changes to your bundle are completely separated and require a versioning process, but can be required into your application at build time. This design can prevent engineers going from the app/api interface straight to the database or service.
+
+```
+\
+  - bundle
+    - objects
+    - dal
+    - package.json
+  - app
+    - node_modules
+      - [bundle]
+    - src
+      - index.js
+      - components
+  - README.md
+  - package.json
+```
+
+By creating a local npm package and combining at build time using npm link, you can keep your dependencies pure and inverted in your architecture or design.
+
+While this pattern keeps your boundaries strong, there are other benefits to this design.
+
+* Testability
+* Swapping Implementation Details
+
+### Everything should be testable without the database and the web.
+
+By separating your business rules from the implementation details, you are able to create `reliable` test plans that can be run in any environment that can run your application, without depending on the web, or a database etc. This can give your team a lot of confidence in building and adding features to the product, when something breaks it is high signal and not a design smell.
+
+### Guess what things change.
+
+Overtime an successful application will continue to get more complex and will require modification, or frameworks will become obsolete, or databases will need to be re-architected. How can you protect your application from these changing implementation details? With a clean architecture you can turn these migrations into managable migrations that can be planned and executed on time in stride to other priorities, and have strong confidence that you will be successful in the migration.
+
+### Frequently Asked Questions
+
+ 
