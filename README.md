@@ -5,9 +5,19 @@ What is software architecture and why is it important?
 
 > The goal of software architecture is to minimize the human resources required to build and maintain the required system.
 
-The measure of design quality is simply the measure of the effort required to meet the needs of the customer. If that effort is low, and stays low throughout the lifetime of the system, the design is good.
+The measure of design quality is the measure of the effort required to meet the needs of the customer. 
 
-BOB is a container used to help create clean software architecture. By enabling the inversion of dependency with implementation details using the facade pattern. 
+#### If that effort is `low`, and stays `low` throughout the lifetime of the system, the design is good.
+
+#### If that effort is `high`, and stays `high` throughout the lifetime of the system, the design is bad.
+
+[Clean Architecture Concept Diagram](clean-architecture.png)
+
+
+BOB is a bundler used to help create clean software architecture. By enabling the inversion of dependency with implementation details using the facade pattern. 
+
+* https://en.wikipedia.org/wiki/Dependency_inversion_principle
+* https://en.wikipedia.org/wiki/Facade_pattern
 
 > This means, that the bob module can compose one or more objects together for a single grouping of pure business rules that can access implementation details like database gateways without having to explicity depend on these gateways.
 
@@ -75,7 +85,7 @@ to a data store. Once persisted it can check for success and return a successful
 
 Good question, the main reason is flexibility, by abstracting your business rules and creating a boundry between your details like api framework or database, these details can be changed without changing your business rules.
 
-> Think about it for a minute, what if every requirement or every user change or new use case could be managed in one defined location, so when the stakeholder changes their mind it does not effect or touch several components in the system. 
+> Think about it for a minute, what if every requirement or every user change request or new use case could be managed in one defined location, so when the stakeholder changes their mind it does not effect or touch several design components in the system.  
 
 Another way to think about it, is that stakeholders change their minds all the time, they may want the workflow
 to go right, then they may want it to go left, etc. By placing all of those decisions in your `BusinessObjects` 
@@ -83,8 +93,7 @@ and decoupling them from your database or api framework, then you can change a l
 control flow and strategies without having to change your framework or database. This means you can wrap a whole test framework around your business objects and you will be able to test a significant amount of your features 
 using integration or unit testing libraries without having to load your whole database or api framework.
 
-This can add a lot of confidence to your team, yes it is more effort up front, but the payoff in the end is 
-maintainable code.
+Having all of your business rules wrapped with reliable testing adds confidence to the engineering team. It does take effort up front, but the payoff is maintainable code, with a consistent amount of effort to maintain over time.
 
 ### Why use a tool like business object bundler? Why not just create my business objects and manage them withouta bundle?
 
@@ -214,4 +223,28 @@ Overtime an successful application will continue to get more complex and will re
 
 ### Frequently Asked Questions
 
- 
+* Do I have to use bob to get the benefits of clean architecture?
+
+No, bob is one pattern solution that is a little more js functional focused, but there are plenty of ways using oop patterns and/or other patterns to solve the problem. The important requirement is that your business rules/objects do not depend on details, they have strong boundaries between the details and the business rules.
+
+* Can I slice my architecture/design vertically over time with this implementation? 
+
+Yes, this solution keeps all business objects at the code level isolated on dependencies, but if you create dependencies within your bundle, then it may be harder to break them apart over time. Since they are connected in one place with reliable testing, it should be possible to refactor and separate into vertical components as well as migrate to services as time goes on and the need for reusability and scalability changes.
+
+* Why not start with microservices out of the gate?
+
+Microservices is not an architecture design as much as it is separating business rules into a distributed system and you may want to consider the overhead required to do this correctly and make sure that these components are truly isolatable. In other words if you find new use cases being introduced touching several services then they are not really isolated. Or if you find that you have to load several microservices on your system in order to develop, then you have split connected business rules into different places and should consider consolidating them back into a single component. The goal with architecture is to minimize the work to maintain a system not to increase it as the system grows in complexity. Starting with microservices out of the gate does nothing but increase the complexity and maintenance burden without validation of scale.
+
+* What if my current app has business rules all over the place?
+
+There is no reason to not start to migrate your current applications to this architecture pattern, you may want to start with new features or new use cases, or as you go in to change existing use cases, create a plan to extract the business rules from your database layer, or framework layer. You don't have to change everything, but just start changing the things right in front of you. Write some tests against your business rules, put them in your ci/cd system. Eventually, you will need to change databases, or web interfaces or api interfaces, by starting to separate your business rules from your details, it will make this process easier. 
+
+* My Database is the center of my application, won't this create a problem with this kind of architecture?
+
+Many applications have this challenge, it is a discussion you should have with your team, but making the database the center of the application can create a marriage with that database and basically make it impossible to divorce in the future. Try to image a situation where that database vendor is going out of business or decides to stop supporting that product, what are you going to do? Databases are great tools and have a lot of value in creating optimizations to store data, but the business rules should not be embedded within the database. If you are in a situation where your rules are inside the database you can start a migration process to move them out over time and set your team up to create a plan to migrate the rules from the database to a set of system components.
+
+* My framework is the center of my application, how do I migrate to a clean architecture?
+
+Many frameworks encourage you to marry them by adding your business rules to the framework itself, while it makes it hard to divorce, it is still possible, by drawing a line in the sand between your view/controllers and your models, you can start to separate the business rules into their own components and refactor your test suites to focus on testing the business rules. Then your dependency on the framework becomes a detail that can swapped out when the need arises.
+
+
