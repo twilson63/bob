@@ -95,7 +95,7 @@ using integration or unit testing libraries without having to load your whole da
 
 Having all of your business rules wrapped with reliable testing adds confidence to the engineering team. It does take effort up front, but the payoff is maintainable code, with a consistent amount of effort to maintain over time.
 
-### Why use a tool like business object bundler? Why not just create my business objects and manage them withouta bundle?
+### Why use a tool like business object bundler? Why not just create my business objects and manage them without a bundle?
 
 The purpose of the bundler is to give you a way to compose these objects together so that you can create 
 and refactor the business object boundaries without having explicit dependencies between the objects or 
@@ -241,10 +241,14 @@ There is no reason to not start to migrate your current applications to this arc
 
 * My Database is the center of my application, won't this create a problem with this kind of architecture?
 
-Many applications have this challenge, it is a discussion you should have with your team, but making the database the center of the application can create a marriage with that database and basically make it impossible to divorce in the future. Try to image a situation where that database vendor is going out of business or decides to stop supporting that product, what are you going to do? Databases are great tools and have a lot of value in creating optimizations to store data, but the business rules should not be embedded within the database. If you are in a situation where your rules are inside the database you can start a migration process to move them out over time and set your team up to create a plan to migrate the rules from the database to a set of system components.
+Many applications have this challenge, it is a discussion you should have with your team, but making the database the center of the application can create a marriage with that database and make it impossible to divorce in the future. Try to imagine a situation where your database vendor is going out of business or decides to stop supporting that product, what are you going to do? Databases are great tools and have a lot of value in creating optimizations to store data, but the business rules should not be embedded within the database. If you are in a situation where your rules are inside the database you can start a migration process to move them out over time and set your team up to create a plan to migrate the rules from the database to a set of system components.
 
 * My framework is the center of my application, how do I migrate to a clean architecture?
 
 Many frameworks encourage you to marry them by adding your business rules to the framework itself, while it makes it hard to divorce, it is still possible, by drawing a line in the sand between your view/controllers and your models, you can start to separate the business rules into their own components and refactor your test suites to focus on testing the business rules. Then your dependency on the framework becomes a detail that can swapped out when the need arises.
+
+* Other questions?
+
+email: twilson63@gmail.com
 
 
