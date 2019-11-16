@@ -1,3 +1,5 @@
+![Splitting Atoms](Splitting-Atoms.jpg)
+
 # Business Object Bundler or BOB
 
 Welcome to the BOB project! This project is about software design/architecture. 
