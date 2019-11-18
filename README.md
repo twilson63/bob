@@ -15,6 +15,21 @@ The measure of design quality is the measure of the effort required to meet the 
 
 [Clean Architecture Concept Diagram](clean-architecture.png)
 
+## Why think about architecture/design?
+
+From working in a startup organization to a high growth organization, new features and shifting of priorities is
+ a constant battle. If the engineering team chooses just to react to these by just choosing the easiest way forward at a given time, without properly thinking through the long term costs. The product could end up in a situation where every new feature's cost and time to market increases exponentially. This requires more resources and
+time to continually ship a product of high quality. By building quality into the project and implementing a design that separates boundaries of functionality, we can design systems that keep the overhead of implementing features to a reasonable minimum cost. We can also keep the time to build features low through the lifetime of the system. It becomes easier to build and maintain reliable automated tests that focus on testing the use cases of a
+ system and when the test break it is a high signal of a true issue. It becomes easier for developers to work concurrently on different features without having to create long-lived branches and deal with painful merge requests.
+
+## What kind of pain points will a clean architecture approach avoid?
+
+* The need for long lived feature branches and painful merges to master, ie continuous deployment.
+* Having to touch several areas to complete or manage adding use cases between other use cases, ie spagetti code.
+* Having to work in coordination with several teams to get initiatives completed, ie bad abstractions early.
+* Able to modify/upgrade implementation details without having to re-write reliable tests or use cases, ie separation of concerns.
+
+## What is BOB?
 
 BOB is a bundler used to help create clean software architecture. By enabling the inversion of dependency with implementation details using the facade pattern. 
 

@@ -22,6 +22,19 @@ What is software architecture and why is it important?</p>
 <h4 id="if-that-effort-is-low-and-stays-low-throughout-the-lifetime-of-the-system-the-design-is-good-">If that effort is <code>low</code>, and stays <code>low</code> throughout the lifetime of the system, the design is good.</h4>
 <h4 id="if-that-effort-is-high-and-stays-high-throughout-the-lifetime-of-the-system-the-design-is-bad-">If that effort is <code>high</code>, and stays <code>high</code> throughout the lifetime of the system, the design is bad.</h4>
 <p><a href="clean-architecture.png">Clean Architecture Concept Diagram</a></p>
+<h2 id="why-think-about-architecture-design-">Why think about architecture/design?</h2>
+<p>From working in a startup organization to a high growth organization, new features and shifting of priorities is
+ a constant battle. If the engineering team chooses just to react to these by just choosing the easiest way forward at a given time, without properly thinking through the long term costs. The product could end up in a situation where every new feature&#39;s cost and time to market increases exponentially. This requires more resources and
+time to continually ship a product of high quality. By building quality into the project and implementing a design that separates boundaries of functionality, we can design systems that keep the overhead of implementing features to a reasonable minimum cost. We can also keep the time to build features low through the lifetime of the system. It becomes easier to build and maintain reliable automated tests that focus on testing the use cases of a
+ system and when the test break it is a high signal of a true issue. It becomes easier for developers to work concurrently on different features without having to create long-lived branches and deal with painful merge requests.</p>
+<h2 id="what-kind-of-pain-points-will-a-clean-architecture-approach-avoid-">What kind of pain points will a clean architecture approach avoid?</h2>
+<ul>
+<li>The need for long lived feature branches and painful merges to master, ie continuous deployment.</li>
+<li>Having to touch several areas to complete or manage adding use cases between other use cases, ie spagetti code.</li>
+<li>Having to work in coordination with several teams to get initiatives completed, ie bad abstractions early.</li>
+<li>Able to modify/upgrade implementation details without having to re-write reliable tests or use cases, ie separation of concerns.</li>
+</ul>
+<h2 id="what-is-bob-">What is BOB?</h2>
 <p>BOB is a bundler used to help create clean software architecture. By enabling the inversion of dependency with implementation details using the facade pattern. </p>
 <ul>
 <li><a href="https://en.wikipedia.org/wiki/Dependency_inversion_principle">https://en.wikipedia.org/wiki/Dependency_inversion_principle</a></li>
