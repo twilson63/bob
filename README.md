@@ -1,3 +1,10 @@
+---
+title: BOB - Business Object Bundler
+description: Organizing your business rules in dependency free objects
+image_url: /Splitting-Atoms.jpg
+image_alt: Clean Architecture
+---
+
 ![Splitting Atoms](Splitting-Atoms.jpg)
 
 # Business Object Bundler or BOB
@@ -205,7 +212,11 @@ The more decisions of our application we can place in these business objects, th
 
 You can certainly package bob and business objects anywhere, but give some good thought on how you want to partition your business objects for your application. Also the displine required to implement through the dependency process. By separating layers using package components maybe worth the effort to risk developer taking short cuts.
 
-One possible solution is to leverage `npm link` to symlink your business object bundle to your application, this way the changes to your bundle are completely separated and require a versioning process, but can be required into your application at build time. This design can prevent engineers going from the app/api interface straight to the database or service.
+Using `yarn workspaces` is a great way to separate the concerns within a project repository.
+
+[Yarn Workspaces](https://www.yarnpkg.com/blog/2017/08/02/introducing-workspaces/)
+
+In your root directory add a package.json file then within the package.json file add a workspaces node that takes an array of module folders. This will allow modules from that folder to be referenced within another module.
 
 ```
 \
@@ -223,7 +234,7 @@ One possible solution is to leverage `npm link` to symlink your business object 
   - package.json
 ```
 
-By creating a local npm package and combining at build time using npm link, you can keep your dependencies pure and inverted in your architecture or design.
+You can keep your dependencies pure and inverted in your architecture or design.
 
 While this pattern keeps your boundaries strong, there are other benefits to this design.
 
