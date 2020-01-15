@@ -5,14 +5,14 @@ image_url: /Splitting-Atoms.jpg
 image_alt: Clean Architecture
 ---
 
-![Splitting Atoms](Splitting-Atoms.jpg)
-
-# Business Object Bundler or BOB
+## Business Object Bundler
 
 Welcome to the BOB project! This project is about software design/architecture. 
 What is software architecture and why is it important?
 
 > The goal of software architecture is to minimize the human resources required to build and maintain the required system.
+
+![Splitting Atoms](Splitting-Atoms.jpg)
 
 The measure of design quality is the measure of the effort required to meet the needs of the customer. 
 

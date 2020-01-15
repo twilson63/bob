@@ -5,36 +5,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>ipress</title>
-  <link rel="stylesheet" href="style.css">
+  <title>BOB - Business Object Bundler</title>
+  <meta name="description" content="Organizing your business rules in dependency free objects">
+  <link rel="stylesheet" href="/style.css">
+  <meta property="og:title" content="BOB - Business Object Bundler">
+  <meta property="og:image" content="/Splitting-Atoms.jpg">
+  <meta property="og:image:alt" content="Clean Architecture">
+  <meta property="og:description" content="Organizing your business rules in dependency free objects">
 </head>
 
 <body style="width: 70%;margin: auto">
   <div id="wrapper">
-  <p><img src="Splitting-Atoms.jpg" alt="Splitting Atoms"></p>
-<h1 id="business-object-bundler-or-bob">Business Object Bundler or BOB</h1>
+  <h2 id="business-object-bundler">Business Object Bundler</h2>
 <p>Welcome to the BOB project! This project is about software design/architecture. 
 What is software architecture and why is it important?</p>
 <blockquote>
 <p>The goal of software architecture is to minimize the human resources required to build and maintain the required system.</p>
 </blockquote>
+<p><img src="Splitting-Atoms.jpg" alt="Splitting Atoms"></p>
 <p>The measure of design quality is the measure of the effort required to meet the needs of the customer. </p>
-<h4 id="if-that-effort-is-low-and-stays-low-throughout-the-lifetime-of-the-system-the-design-is-good-">If that effort is <code>low</code>, and stays <code>low</code> throughout the lifetime of the system, the design is good.</h4>
-<h4 id="if-that-effort-is-high-and-stays-high-throughout-the-lifetime-of-the-system-the-design-is-bad-">If that effort is <code>high</code>, and stays <code>high</code> throughout the lifetime of the system, the design is bad.</h4>
+<h4 id="if-that-effort-is-low-and-stays-low-throughout-the-lifetime-of-the-system-the-design-is-good">If that effort is <code>low</code>, and stays <code>low</code> throughout the lifetime of the system, the design is good.</h4>
+<h4 id="if-that-effort-is-high-and-stays-high-throughout-the-lifetime-of-the-system-the-design-is-bad">If that effort is <code>high</code>, and stays <code>high</code> throughout the lifetime of the system, the design is bad.</h4>
 <p><a href="clean-architecture.png">Clean Architecture Concept Diagram</a></p>
-<h2 id="why-think-about-architecture-design-">Why think about architecture/design?</h2>
+<h2 id="why-think-about-architecturedesign">Why think about architecture/design?</h2>
 <p>From working in a startup organization to a high growth organization, new features and shifting of priorities is
  a constant battle. If the engineering team chooses just to react to these by just choosing the easiest way forward at a given time, without properly thinking through the long term costs. The product could end up in a situation where every new feature&#39;s cost and time to market increases exponentially. This requires more resources and
 time to continually ship a product of high quality. By building quality into the project and implementing a design that separates boundaries of functionality, we can design systems that keep the overhead of implementing features to a reasonable minimum cost. We can also keep the time to build features low through the lifetime of the system. It becomes easier to build and maintain reliable automated tests that focus on testing the use cases of a
  system and when the test break it is a high signal of a true issue. It becomes easier for developers to work concurrently on different features without having to create long-lived branches and deal with painful merge requests.</p>
-<h2 id="what-kind-of-pain-points-will-a-clean-architecture-approach-avoid-">What kind of pain points will a clean architecture approach avoid?</h2>
+<h2 id="what-kind-of-pain-points-will-a-clean-architecture-approach-avoid">What kind of pain points will a clean architecture approach avoid?</h2>
 <ul>
 <li>The need for long lived feature branches and painful merges to master, ie continuous deployment.</li>
 <li>Having to touch several areas to complete or manage adding use cases between other use cases, ie spagetti code.</li>
 <li>Having to work in coordination with several teams to get initiatives completed, ie bad abstractions early.</li>
 <li>Able to modify/upgrade implementation details without having to re-write reliable tests or use cases, ie separation of concerns.</li>
 </ul>
-<h2 id="what-is-bob-">What is BOB?</h2>
+<h2 id="what-is-bob">What is BOB?</h2>
 <p>BOB is a bundler used to help create clean software architecture. By enabling the inversion of dependency with implementation details using the facade pattern. </p>
 <ul>
 <li><a href="https://en.wikipedia.org/wiki/Dependency_inversion_principle">https://en.wikipedia.org/wiki/Dependency_inversion_principle</a></li>
@@ -44,13 +49,13 @@ time to continually ship a product of high quality. By building quality into the
 <p>This means, that the bob module can compose one or more objects together for a single grouping of pure business rules that can access implementation details like database gateways without having to explicity depend on these gateways.</p>
 </blockquote>
 <p>These objects are called business objects, they are a group of functions that perform the use cases of an application, or you can think of them as the business rules or policies of your application. By making these objects and functions pure, which means they do not depend on any implementation details, then you can wrap a whole test system around them without having to include the database or web or framework.</p>
-<h3 id="what-is-a-business-object-">What is a Business Object?</h3>
+<h3 id="what-is-a-business-object">What is a Business Object?</h3>
 <p>A business object is a collection of business rules for your application. 
 Business rules are what makes your application unique and special, these rules 
 are usually defined in terms of entities and iterators, or simply use cases. When
 architecting or designing your application the first mission is to define the use 
 cases. These use cases frame the requirements of your application.</p>
-<h2 id="what-are-implementation-details-">What are Implementation Details?</h2>
+<h2 id="what-are-implementation-details">What are Implementation Details?</h2>
 <p>Implementation Details are mostly side effect interfaces to your application, you can think of the following as implementation details.</p>
 <ul>
 <li>Database Access Layer or DAL</li>
@@ -87,7 +92,7 @@ detail.</p>
 <p>This approach allows for the person create use case to leverage the gateway interface to persist the object, 
 but the business object can validate the person object and apply any rules or calculations before persisting
 to a data store. Once persisted it can check for success and return a successful result or return an error.</p>
-<h3 id="why-do-i-need-this-abstraction-">Why do I need this abstraction?</h3>
+<h3 id="why-do-i-need-this-abstraction">Why do I need this abstraction?</h3>
 <p>Good question, the main reason is flexibility, by abstracting your business rules and creating a boundry between your details like api framework or database, these details can be changed without changing your business rules.</p>
 <blockquote>
 <p>Think about it for a minute, what if every requirement or every user change request or new use case could be managed in one defined location, so when the stakeholder changes their mind it does not effect or touch several design components in the system.  </p>
@@ -98,7 +103,7 @@ and decoupling them from your database or api framework, then you can change a l
 control flow and strategies without having to change your framework or database. This means you can wrap a whole test framework around your business objects and you will be able to test a significant amount of your features 
 using integration or unit testing libraries without having to load your whole database or api framework.</p>
 <p>Having all of your business rules wrapped with reliable testing adds confidence to the engineering team. It does take effort up front, but the payoff is maintainable code, with a consistent amount of effort to maintain over time.</p>
-<h3 id="why-use-a-tool-like-business-object-bundler-why-not-just-create-my-business-objects-and-manage-them-without-a-bundle-">Why use a tool like business object bundler? Why not just create my business objects and manage them without a bundle?</h3>
+<h3 id="why-use-a-tool-like-business-object-bundler-why-not-just-create-my-business-objects-and-manage-them-without-a-bundle">Why use a tool like business object bundler? Why not just create my business objects and manage them without a bundle?</h3>
 <p>The purpose of the bundler is to give you a way to compose these objects together so that you can create 
 and refactor the business object boundaries without having explicit dependencies between the objects or 
 the implementation details. There are certainly other ways to accommplish this, but this process can 
@@ -160,7 +165,9 @@ app.listen(3000)
 <p>The more decisions of our application we can place in these business objects, the better we can become at creating reliable testable applications. And manage change over time.</p>
 <h3 id="packaging-options">Packaging Options</h3>
 <p>You can certainly package bob and business objects anywhere, but give some good thought on how you want to partition your business objects for your application. Also the displine required to implement through the dependency process. By separating layers using package components maybe worth the effort to risk developer taking short cuts.</p>
-<p>One possible solution is to leverage <code>npm link</code> to symlink your business object bundle to your application, this way the changes to your bundle are completely separated and require a versioning process, but can be required into your application at build time. This design can prevent engineers going from the app/api interface straight to the database or service.</p>
+<p>Using <code>yarn workspaces</code> is a great way to separate the concerns within a project repository.</p>
+<p><a href="https://www.yarnpkg.com/blog/2017/08/02/introducing-workspaces/">Yarn Workspaces</a></p>
+<p>In your root directory add a package.json file then within the package.json file add a workspaces node that takes an array of module folders. This will allow modules from that folder to be referenced within another module.</p>
 <pre><code>\
   - bundle
     - objects
@@ -173,15 +180,15 @@ app.listen(3000)
       - index.js
       - components
   - README.md
-  - package.json</code></pre><p>By creating a local npm package and combining at build time using npm link, you can keep your dependencies pure and inverted in your architecture or design.</p>
+  - package.json</code></pre><p>You can keep your dependencies pure and inverted in your architecture or design.</p>
 <p>While this pattern keeps your boundaries strong, there are other benefits to this design.</p>
 <ul>
 <li>Testability</li>
 <li>Swapping Implementation Details</li>
 </ul>
-<h3 id="everything-should-be-testable-without-the-database-and-the-web-">Everything should be testable without the database and the web.</h3>
+<h3 id="everything-should-be-testable-without-the-database-and-the-web">Everything should be testable without the database and the web.</h3>
 <p>By separating your business rules from the implementation details, you are able to create <code>reliable</code> test plans that can be run in any environment that can run your application, without depending on the web, or a database etc. This can give your team a lot of confidence in building and adding features to the product, when something breaks it is high signal and not a design smell.</p>
-<h3 id="guess-what-things-change-">Guess what things change.</h3>
+<h3 id="guess-what-things-change">Guess what things change.</h3>
 <p>Overtime an successful application will continue to get more complex and will require modification, or frameworks will become obsolete, or databases will need to be re-architected. How can you protect your application from these changing implementation details? With a clean architecture you can turn these migrations into managable migrations that can be planned and executed on time in stride to other priorities, and have strong confidence that you will be successful in the migration.</p>
 <h3 id="frequently-asked-questions">Frequently Asked Questions</h3>
 <ul>
