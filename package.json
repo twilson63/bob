@@ -2,14 +2,21 @@
   "name": "@twilson63/bob",
   "version": "1.0.0",
   "main": "index.js",
+  "module": "index.esm.js",
+  
   "license": "MIT",
   "dependencies": {
+    "crocks": "^0.12.4",
     "ramda": "^0.26.1"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^12.0.0",
+    "@rollup/plugin-node-resolve": "^8.0.0",
+    "rollup": "^2.12.0",
     "tape": "^4.11.0"
   },
   "scripts": {
+    "build": "rollup -c",
     "test": "tape test/index_test.js"
   },
   "repository": "git@github.com:twilson63/bob.git",

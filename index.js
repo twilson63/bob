@@ -1,6 +1,7 @@
 const { reduce, assoc, keys, all, equals, has, 
   append, compose, is, not
 } = require('ramda')
+const { liftA2, safe, curry } = require('crocks')
 
 /**
  * create business object bundler
@@ -18,6 +19,17 @@ const hasName = compose(
   reduce((a,v) => append(has('name', v), a), [])
 )
 
+module.exports = function(objs, params={}) {
+  const safeObjs = safe(validateObjs)
+  const safeParams = safe(validateParams)
+  // create safe create function 
+  //const safeCreateBob = (a,b) => liftA2(curry(createBob), safeObjs(a), safeParams(b))
+  const safeCreateBob = (a,b) => liftA2(curry(createBob), safeObjs(a), safeParams(b))
+
+  // unwrap bob object
+  return safeCreateBob(objs, params)
+    .option({error: 'All Business Objects must have name properties'})
+}
 /**
  * createBob
  *
@@ -30,7 +42,7 @@ const hasName = compose(
  * @return {object}
  *
  */
-module.exports = function (bizObjs, details={}) {
+function createBob(bizObjs, details) {
   if (not(is(Object, details))) {
     throw new Error('details must be an [Object]')
   }
@@ -76,4 +88,12 @@ function rewrap(bo) {
       return acc
     }
   }
+}
+
+function validateObjs(objects) {
+  return is(Array, objects) //&& isObject(objects) && hasName(objects)  
+}
+
+function validateParams(params) {
+  return is(Object, params) 
 }

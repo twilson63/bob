@@ -59,7 +59,7 @@ test('all business object functions should return function', t => {
 })
 
 test('access details within business object without dependency', t => {
-  const boFoo = { name: 'foo', beep: () => ({ details }) => details.doSomething() }
+  const boFoo = { name: 'foo', beep: () => ({ details }) => details.doSomething ? details.doSomething() : null }
   const app = createApp([clean1, clean2, boFoo], { doSomething: () => 'Hello' })
   t.equal(app.foo.beep(), 'Hello')
   t.end()
