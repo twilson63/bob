@@ -1,9 +1,8 @@
 {
   "name": "@twilson63/bob",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "module": "index.esm.js",
-  
   "license": "MIT",
   "dependencies": {
     "crocks": "^0.12.4",
